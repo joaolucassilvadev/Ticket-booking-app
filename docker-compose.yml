@@ -7,7 +7,7 @@ services:
     container_name: ticket-booking-app
     build: . 
     ports:
-      - 4000:4000
+      - "4000:4000"
     env_file:
       - .env
     networks:
@@ -17,24 +17,25 @@ services:
         condition: service_healthy
     volumes:
       - .:/src/app
+    working_dir: /src/app
     command: air -c .air.toml
 
   db:
-    image: postgres:alpine 
+    image: postgres:15-alpine 
     container_name: ticket-booking-db
     environment:
-      - POSTGRES_HOST=${DB_HOST}
+      # Nomes corretos das variáveis do PostgreSQL
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     ports: 
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - postgres-db:/var/lib/postgresql/data
     networks:
       - application
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s 
       timeout: 5s 
       retries: 5

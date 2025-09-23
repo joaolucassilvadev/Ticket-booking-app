@@ -20,12 +20,13 @@ func main() {
 
 	// repositories
 	EventRepository := repositories.NewEventRepository(db)
-
+	TicketRepository := repositories.NewTicketRepository(db)
 	// routing
 	server := app.Group("/api")
 
 	// handlers
 	handlers.NewEventHandler(server.Group("/event"), EventRepository)
+	handlers.NewTicketHandler(server.Group("/ticket"), TicketRepository)
 
 	// Porta fixa 4000
 	if err := app.Listen(":4000"); err != nil {
