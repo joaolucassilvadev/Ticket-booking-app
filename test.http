@@ -1,0 +1,141 @@
+### Variáveis
+@baseUrl = http://localhost:4000/api
+@eventId = seu-evento-id-aqui
+@ticketId = 1
+
+################################################################################
+# EVENT ENDPOINTS
+################################################################################
+
+### Criar um novo evento
+POST {{baseUrl}}/event
+Content-Type: application/json
+
+{
+  "id": "evento-show-2024",
+  "name": "Show de Rock 2024",
+  "location": "Arena Central",
+  "date": "2024-12-31T20:00:00Z"
+}
+
+### Listar todos os eventos
+GET {{baseUrl}}/event
+
+### Buscar um evento específico
+GET {{baseUrl}}/event/eventId
+
+
+################################################################################
+# TICKET ENDPOINTS
+################################################################################
+
+### Criar um novo ticket
+POST {{baseUrl}}/ticket
+Content-Type: application/json
+
+{
+  "event_id": "evento-show-2024"
+}
+
+### Listar todos os tickets
+GET {{baseUrl}}/ticket
+
+### Buscar um ticket específico
+GET {{baseUrl}}/ticket/{{ticketId}}
+
+### Validar um ticket (marcar como entrada realizada)
+POST {{baseUrl}}/ticket/validate
+Content-Type: application/json
+
+{
+  "ticket_id": {{ticketId}}
+}
+
+
+################################################################################
+# FLUXO DE TESTE COMPLETO
+################################################################################
+
+### 1. Criar evento de teste
+POST {{baseUrl}}/event
+Content-Type: application/json
+
+{
+  "id": "evento-teste-001",
+  "name": "Festival de Verão 2025",
+  "location": "Praia de Copacabana",
+  "date": "2025-01-15T18:00:00Z"
+}
+
+###
+
+### 2. Criar outro evento
+POST {{baseUrl}}/event
+Content-Type: application/json
+
+{
+  "id": "evento-teste-002",
+  "name": "Show de Jazz",
+  "location": "Teatro Municipal",
+  "date": "2025-02-20T21:00:00Z"
+}
+
+###
+
+### 3. Listar todos os eventos criados
+GET {{baseUrl}}/event
+
+###
+
+### 4. Criar ticket para o primeiro evento
+POST {{baseUrl}}/ticket
+Content-Type: application/json
+
+{
+  "event_id": "evento-teste-001"
+}
+
+###
+
+### 5. Criar mais tickets
+POST {{baseUrl}}/ticket
+Content-Type: application/json
+
+{
+  "event_id": "evento-teste-001"
+}
+
+###
+
+### 6. Criar ticket para segundo evento
+POST {{baseUrl}}/ticket
+Content-Type: application/json
+
+{
+  "event_id": "evento-teste-002"
+}
+
+###
+
+### 7. Listar todos os tickets
+GET {{baseUrl}}/ticket
+
+###
+
+### 8. Buscar ticket específico (ajuste o ID conforme necessário)
+GET {{baseUrl}}/ticket/1
+
+###
+
+### 9. Validar ticket (entrada no evento)
+POST {{baseUrl}}/ticket/validate
+Content-Type: application/json
+
+{
+  "ticket_id": 1
+}
+
+###
+
+### 10. Verificar ticket após validação
+GET {{baseUrl}}/ticket/1
